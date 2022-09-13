@@ -12,19 +12,23 @@ using Weather_Bot;
 
 var botClient = new TelegramBotClient("5508535639:AAEloOE7dOKW2JjaqWHA73l_3vsQmQxMezc");
 using var cts = new CancellationTokenSource();
-var receiverOptions = new ReceiverOptions
+while (true)
+{
+    var receiverOptions = new ReceiverOptions
 {
     AllowedUpdates = { }
 };
-botClient.StartReceiving(
-    AbhWeather.HandleUpdatesAsync,
-    AbhWeather.HandleErrorAsync,
-    receiverOptions,
-    cancellationToken: cts.Token);
-var me = await botClient.GetMeAsync();
-Console.WriteLine($"Запущен бот {me.Username}");
-Console.ReadLine();
-cts.Cancel();
+
+    botClient.StartReceiving(
+        AbhWeather.HandleUpdatesAsync,
+        AbhWeather.HandleErrorAsync,
+        receiverOptions,
+        cancellationToken: cts.Token);
+    var me = await botClient.GetMeAsync();
+    Console.WriteLine($"Запущен бот {me.Username}");
+    Console.ReadLine();
+    cts.Cancel();
+}
 
 namespace Weather_Bot
 {
@@ -32,8 +36,6 @@ namespace Weather_Bot
     {
         async public static Task HandleUpdatesAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            Console.WriteLine($"Готов принимать обновления");
-
             if (update.Type == UpdateType.Message && update?.Message?.Text != null)
             {
                 await HandleMessage(botClient, update.Message);
@@ -42,8 +44,6 @@ namespace Weather_Bot
         }
         static async Task HandleMessage(ITelegramBotClient botClient, Message message)
         {
-            Console.WriteLine($"Готов начать парсинг");
-
             string url;
             string city = "";
             string temp = "";
