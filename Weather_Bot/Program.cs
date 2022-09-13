@@ -12,13 +12,13 @@ using Weather_Bot;
 
 var botClient = new TelegramBotClient("5508535639:AAEloOE7dOKW2JjaqWHA73l_3vsQmQxMezc");
 using var cts = new CancellationTokenSource();
-while (true)
-{
+
     var receiverOptions = new ReceiverOptions
 {
     AllowedUpdates = { }
 };
-
+while (true)
+{
     botClient.StartReceiving(
         AbhWeather.HandleUpdatesAsync,
         AbhWeather.HandleErrorAsync,
@@ -44,6 +44,7 @@ namespace Weather_Bot
         }
         static async Task HandleMessage(ITelegramBotClient botClient, Message message)
         {
+
             string url;
             string city = "";
             string temp = "";
