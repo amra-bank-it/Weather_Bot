@@ -12,33 +12,31 @@ using Weather_Bot;
 
 var botClient = new TelegramBotClient("5508535639:AAEloOE7dOKW2JjaqWHA73l_3vsQmQxMezc");
 using var cts = new CancellationTokenSource();
-
-    var receiverOptions = new ReceiverOptions
+var receiverOptions = new ReceiverOptions
 {
     AllowedUpdates = { }
 };
-while (true)
-{
-    botClient.StartReceiving(
+var me = await botClient.GetMeAsync();
+Console.WriteLine(receiverOptions);
+Console.WriteLine($"Запущен бот {me.Username}");
+botClient.StartReceiving(
         AbhWeather.HandleUpdatesAsync,
         AbhWeather.HandleErrorAsync,
         receiverOptions,
         cancellationToken: cts.Token);
-    var me = await botClient.GetMeAsync();
-    Console.WriteLine($"Запущен бот {me.Username}");
-    Console.ReadLine();
-    cts.Cancel();
-}
+Console.ReadLine();
+cts.Cancel();
 
 namespace Weather_Bot
 {
     public class AbhWeather
     {
-        async public static Task HandleUpdatesAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+
+        public static async Task HandleUpdatesAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
             if (update.Type == UpdateType.Message && update?.Message?.Text != null)
             {
-                await HandleMessage(botClient, update.Message);
+                await AbhWeather.HandleMessage(botClient, update.Message);
                 return;
             }
         }
@@ -213,6 +211,8 @@ namespace Weather_Bot
                     break;
             }
         }
+
+
         public static Task HandleErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken cancellationToken)
         {
             var ErrorMessage = exception switch
@@ -225,4 +225,6 @@ namespace Weather_Bot
             return Task.CompletedTask;
         }
     }
+
 }
+
