@@ -32,6 +32,8 @@ namespace Weather_Bot
     {
         async public static Task HandleUpdatesAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
+            Console.WriteLine($"Готов принимать обновления");
+
             if (update.Type == UpdateType.Message && update?.Message?.Text != null)
             {
                 await HandleMessage(botClient, update.Message);
@@ -40,6 +42,8 @@ namespace Weather_Bot
         }
         static async Task HandleMessage(ITelegramBotClient botClient, Message message)
         {
+            Console.WriteLine($"Готов начать парсинг");
+
             string url;
             string city = "";
             string temp = "";
