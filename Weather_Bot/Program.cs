@@ -30,8 +30,6 @@ namespace Weather_Bot
 {
     public class AbhWeather
     {
-
-
         async public static Task HandleUpdatesAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
             if (update.Type == UpdateType.Message && update?.Message?.Text != null)
@@ -40,10 +38,9 @@ namespace Weather_Bot
                 return;
             }
         }
-
         static async Task HandleMessage(ITelegramBotClient botClient, Message message)
         {
-            string url = "";
+            string url;
             string city = "";
             string temp = "";
             string feels = "";
