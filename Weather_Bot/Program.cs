@@ -17,15 +17,21 @@ var receiverOptions = new ReceiverOptions
     AllowedUpdates = { }
 };
 var me = await botClient.GetMeAsync();
-Console.WriteLine(receiverOptions);
 Console.WriteLine($"Запущен бот {me.Username}");
-botClient.StartReceiving(
-        AbhWeather.HandleUpdatesAsync,
-        AbhWeather.HandleErrorAsync,
-        receiverOptions,
-        cancellationToken: cts.Token);
-Console.ReadLine();
-cts.Cancel();
+try
+{
+    botClient.StartReceiving(
+            AbhWeather.HandleUpdatesAsync,
+            AbhWeather.HandleErrorAsync,
+            receiverOptions,
+            cancellationToken: cts.Token);
+    Console.ReadLine();
+    cts.Cancel();
+}
+catch (Exception e)
+{
+    Console.WriteLine("FFS WHY!?: " + e.ToString());
+}
 
 namespace Weather_Bot
 {
@@ -212,7 +218,6 @@ namespace Weather_Bot
             }
         }
 
-
         public static Task HandleErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken cancellationToken)
         {
             var ErrorMessage = exception switch
@@ -225,6 +230,6 @@ namespace Weather_Bot
             return Task.CompletedTask;
         }
     }
-
+    
 }
 
